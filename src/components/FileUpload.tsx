@@ -74,13 +74,10 @@ const FileUpload: React.FC = () => {
     };
 
     const handleDeleteFile = () => {
-        // Clean up file-related state
         setFile(null);
-        setVideoUrl(null);
 
-        // Reset the file input field
         if (fileInputRef.current) {
-            fileInputRef.current.value = ''; // Clear the file input
+            fileInputRef.current.value = ''; 
         }
     };
 
