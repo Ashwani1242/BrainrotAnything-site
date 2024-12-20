@@ -11,7 +11,7 @@ const FileUpload: React.FC = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [inputOption, setInputOption] = useState<typeof TOGGLE_OPTIONS[0]>(TOGGLE_OPTIONS[0]);
     const [textInput, setTextInput] = useState<string>("");
-    const maxLengthForText = 4000;
+    const maxLengthForText = 10000;
 
     const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTextInput(e.target.value);
@@ -160,7 +160,7 @@ const FileUpload: React.FC = () => {
                         )
                         : (
                             <div className='h-full w-full relative'>
-                                <div className={`absolute -top-5 right-0 text-xs ${isTextLimitExceeded ? 'text-red-600' : 'text-neutral-600'}`}>{maxLengthForText - textInput.length} / {maxLengthForText}</div>
+                                <div className={`absolute -top-5 right-0 text-xs ${isTextLimitExceeded ? 'text-red-600' : 'text-neutral-600'}`}>{maxLengthForText - textInput.length} / {maxLengthForText} characters</div>
                                 <textarea
                                     placeholder="Enter your text here..."
                                     onChange={handleTextAreaChange}
