@@ -25,7 +25,7 @@ const FileUpload: React.FC = () => {
     };
 
     const handleSubmit = async () => {
-        if (!file) {
+        if (!file && inputOption === 'File') {
             alert('Please select a file to upload.');
             return;
         }
