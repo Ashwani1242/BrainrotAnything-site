@@ -11,7 +11,7 @@ const FileUpload: React.FC = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [inputOption, setInputOption] = useState<typeof TOGGLE_OPTIONS[0]>(TOGGLE_OPTIONS[0]);
     const [textInput, setTextInput] = useState<string>("");
-    const maxLengthForText = 1000;
+    const maxLengthForText = 4000;
 
     const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTextInput(e.target.value);
