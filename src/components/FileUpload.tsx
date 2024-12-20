@@ -11,6 +11,14 @@ const FileUpload: React.FC = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [inputOption, setInputOption] = useState<typeof TOGGLE_OPTIONS[0]>(TOGGLE_OPTIONS[0]);
     const [textInput, setTextInput] = useState<string>("");
+    const maxLengthForText = 1000;
+
+    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setTextInput(e.target.value);
+    };
+
+    const remainingChars = maxLengthForText - textInput.length;
+    const isTextLimitExceeded = remainingChars < 0;
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0];
@@ -29,7 +37,17 @@ const FileUpload: React.FC = () => {
             alert('Please select a file to upload.');
             return;
         }
-        
+
+        if (!textInput && inputOption === 'Text') {
+            alert('Please enter text to upload.');
+            return;
+        }
+
+        if (isTextLimitExceeded) {
+            alert('Text limit exceeded. Please enter a shorter text.');
+            return;
+        }
+
         let currentTime = Date.now();
 
         setIsLoading(true);
@@ -47,7 +65,7 @@ const FileUpload: React.FC = () => {
         }
 
         formData.append('time', String(currentTime));
-        
+
         formData.append('userName', 'Brainrot Anything!');
 
         try {
@@ -77,7 +95,7 @@ const FileUpload: React.FC = () => {
         setFile(null);
 
         if (fileInputRef.current) {
-            fileInputRef.current.value = ''; 
+            fileInputRef.current.value = '';
         }
     };
 
@@ -141,15 +159,19 @@ const FileUpload: React.FC = () => {
                             </form>
                         )
                         : (
-                            <textarea
-                                placeholder="Enter your text here..."
-                                onChange={e => setTextInput(e.target.value)}
-                                className='border-2 border-dashed outline-none p-4 border-[#ccc] rounded-lg h-full min-h-[260px] w-full transition-all duration-300 bg-[#fafafa] shadow-[0px_48px_35px_-48px_#e8e8e8] hover:border-[#33a1fd] hover:shadow-[0_0_10px_rgba(255,126,95,0.3)] hover:bg-[#fff5f2] focus:border-[#232988] focus:shadow-[0_0_10px_rgba(255,126,95,0.3)] focus:bg-[#fff5f2] mb-2'>
+                            <div className='h-full w-full relative'>
+                                <div className={`absolute -top-5 right-0 text-xs ${isTextLimitExceeded ? 'text-red-600' : 'text-neutral-600'}`}>{maxLengthForText - textInput.length} / {maxLengthForText}</div>
+                                <textarea
+                                    placeholder="Enter your text here..."
+                                    onChange={handleTextAreaChange}
+                                    value={textInput}
+                                    className='border-2 border-dashed outline-none p-4 border-[#ccc] rounded-lg h-full min-h-[260px] w-full transition-all duration-300 bg-[#fafafa] shadow-[0px_48px_35px_-48px_#e8e8e8] hover:border-[#33a1fd] hover:shadow-[0_0_10px_rgba(255,126,95,0.3)] hover:bg-[#fff5f2] focus:border-[#232988] focus:shadow-[0_0_10px_rgba(255,126,95,0.3)] focus:bg-[#fff5f2] mb-2'>
+                                </textarea>
+                            </div>
 
-                            </textarea>
                         )
                 }
-                
+
                 <button
                     onClick={handleSubmit}
                     type="submit"
